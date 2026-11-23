@@ -66,3 +66,10 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# PlatformIO and local device configuration
+.pio/
+.vscode/
+/data/host.txt
+/data/ssid.txt
+/data/pass.txt
