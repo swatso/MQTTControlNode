@@ -60,3 +60,9 @@ or install PlatformIO Core. Then:
    filesystem so it reads the new settings.
 4. Open the serial monitor at 115200 baud (`pio device monitor`) and subscribe
    to `mqttcontrolnode/#` on the broker to observe the default messages.
+
+The build enables the ESP32-C3's native USB Serial/JTAG interface for
+`Serial`. Select the board's USB serial port in the monitor; its port number
+may change after uploading or reconnecting. Startup messages can be missed if
+the monitor opens after the board starts, so reset the board with the monitor
+open to see them.

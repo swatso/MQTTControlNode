@@ -20,8 +20,6 @@ struct Input {
 Input inputs[] = {
     {INPUT_1_PIN, INPUT_1_HIGH_TOPIC, INPUT_1_HIGH_PAYLOAD, INPUT_1_LOW_TOPIC, INPUT_1_LOW_PAYLOAD},
     {INPUT_2_PIN, INPUT_2_HIGH_TOPIC, INPUT_2_HIGH_PAYLOAD, INPUT_2_LOW_TOPIC, INPUT_2_LOW_PAYLOAD},
-    {INPUT_3_PIN, INPUT_3_HIGH_TOPIC, INPUT_3_HIGH_PAYLOAD, INPUT_3_LOW_TOPIC, INPUT_3_LOW_PAYLOAD},
-    {INPUT_4_PIN, INPUT_4_HIGH_TOPIC, INPUT_4_HIGH_PAYLOAD, INPUT_4_LOW_TOPIC, INPUT_4_LOW_PAYLOAD},
 };
 
 WiFiClient wifiClient;
@@ -46,16 +44,17 @@ bool readSetting(const char *path, String &value) {
 
 void setup() {
   Serial.begin(115200);
+  while (!Serial); // Wait for serial to be ready
+  delay(1000); // Give some time for the serial to initialize
+  Serial.println("Starting setup...");
   pinMode(WIFI_LED_PIN, OUTPUT);
   digitalWrite(WIFI_LED_PIN, WIFI_LED_OFF);
-
   for (Input &input : inputs) {
     pinMode(input.pin, INPUT_PULLUP);
     input.stableState = input.lastReading = digitalRead(input.pin);
     input.lastChange = millis();
     input.pending = true;
   }
-
   if (!LittleFS.begin()) {
     Serial.println("Could not mount LittleFS");
     return;
@@ -77,6 +76,7 @@ void setup() {
   configured = true;
   WiFi.begin(ssid.c_str(), password.c_str());
   lastWifiAttempt = millis();
+  Serial.println("Setup complete");
 }
 
 void loop() {
